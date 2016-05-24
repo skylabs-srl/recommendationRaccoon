@@ -36,7 +36,7 @@ var server = new Hapi.Server({
 });
 
 server.connection({ port: app.config.server.port, routes: { cors: true } });
-//server.route((require('./api/routes')(app)).endpoints);
+server.route((require('./api/routes')(app)).endpoints);
 logger.trace("Routes loaded successfully.");
 
 server.start((err) => { // start server

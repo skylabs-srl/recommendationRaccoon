@@ -1,13 +1,11 @@
 module.exports = (app) => {
-    var main = app.ctrls.main;
+  var customer = app.ctrls.customer;
 
-    return {
-        endpoints: [
-          {
-              method: 'GET',
-              path: '/',
-              config: main.main
-          }
-        ]
-    };
+  return {
+    endpoints: [{
+      method: 'GET',
+      path: '/api/customers',
+      config: customer.query
+    }]
+  };
 };
