@@ -5,4 +5,3 @@ dumb.rdb
 /logs
 config/development.js
 config/production.js
-.DS_STORE
