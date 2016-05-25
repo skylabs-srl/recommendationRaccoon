@@ -22,6 +22,11 @@ module.exports = function(app) {
     }
   });
 
+  db.Receipt.belongsTo(db.Customer);
+  db.ReceiptProduct.belongsTo(db.Receipt);
+  db.Customer.hasMany(db.Receipt);
+  db.Receipt.hasMany(db.ReceiptProduct);
+  
   db.sequelize = sequelize;
 
   return db;

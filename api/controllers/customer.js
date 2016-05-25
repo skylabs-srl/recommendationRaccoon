@@ -5,6 +5,8 @@ module.exports = function(app) {
   var logger = require('../../utils/logger')(app);
 
   var Customer = app.models.Customer;
+  var Receipt = app.models.Receipt;
+  var ReceiptProduct = app.models.ReceiptProduct;
 
   var exports = {}; // returned object
 
@@ -15,7 +17,14 @@ module.exports = function(app) {
     handler: (request, reply) => {
 
       Customer
-        .findAll({})
+        .findAll({
+          include: {
+            model: Receipt,
+            include: {
+              model: ReceiptProduct
+            }
+          }
+        })
         .then(function(customers) {
           if (!customers) {
             logger.error("Cannot retrieve users or no users at all.");
