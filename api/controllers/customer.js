@@ -2,7 +2,9 @@
 
 module.exports = function(app) {
   var Boom = require('boom');
-  var logger = require('../../utils/logger')(app);
+  var logger = require(__dirname + '/../../utils/logger')(app);
+  var raccoon = require(__dirname + '/../../index.js');
+
 
   var Customer = app.models.Customer;
   var Receipt = app.models.Receipt;
@@ -37,6 +39,27 @@ module.exports = function(app) {
           logger.error("Cannot retrieve users or no users at all. Error: " + e);
           reply(Boom.badData(e));
         });
+    }
+  };
+
+  exports.getRecomendations = {
+    description: 'List customer recomendations',
+    handler: (request, reply) => {
+      raccoon.recommendFor(request.params.name, 10, function(recomendations) {
+        //console.log('recomendations', recomendations);
+        //raccoon.flush();
+        reply(recomendations);
+      });
+    }
+  };
+
+  exports.setLiked = {
+    description: 'Set customer like',
+    handler: (request, reply) => {
+      raccoon.liked(request.payload.name, request.payload.productId, function() {
+        reply('Like set for ' + request.payload.name + ' product ' + request.payload.productId);
+      });
+
     }
   };
 
