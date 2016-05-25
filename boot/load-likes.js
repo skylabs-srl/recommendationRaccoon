@@ -33,7 +33,7 @@ module.exports = function(app) {
               return new Promise(function(resolve2, reject2) {
                 var productsPromises = receipt.ReceiptProducts.map(function(product) {
                   return new Promise(function(resolve3, reject3) {
-                    raccoon.liked(parseInt(customer.id), parseInt(product.productId), function() {
+                    raccoon.liked(/*parseInt(*/customer.id/*)*/, /*parseInt(*/product.productId/*)*/, function() {
                       resolve3('Customer ' + customer.id + ' liked ' + product.productId);
                     });
                   });
@@ -55,9 +55,12 @@ module.exports = function(app) {
         Promise.all(customersPromises).then(function(customersProcessed) {
           console.log(customersProcessed);
           success = true;
-          raccoon.recommendFor('1', '10', function(recomendations) {
+          //prova
+          raccoon.stat.recommendFor(1, 10, function(recomendations) {
             console.log('recomendations', recomendations);
+            resolve(success);
           });
+          /*
           raccoon.mostSimilarUsers('1', function(results) {
             console.log('mostSimilarUsers' + results);
             // returns an array of the 'similaritySet' ranked sorted set for the user which
@@ -131,8 +134,8 @@ module.exports = function(app) {
             console.log('allWatchedFor' + results);
             // returns an array of all the items that user has liked or disliked.
           });
+          */
 
-          resolve(success);
 
         });
 
