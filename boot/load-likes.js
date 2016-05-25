@@ -56,7 +56,7 @@ module.exports = function(app) {
           console.log(customersProcessed);
           success = true;
           //prova
-          raccoon.stat.recommendFor(1, 10, function(recomendations) {
+          raccoon.recommendFor(1, 10, function(recomendations) {
             console.log('recomendations', recomendations);
             resolve(success);
           });
@@ -142,7 +142,7 @@ module.exports = function(app) {
       })
       .catch((e) => {
         logger.error("Cannot retrieve users or no users at all. Error: " + e);
-        reject('db error');
+        reject('DB error');
       });
     });
 
