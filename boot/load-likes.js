@@ -33,8 +33,8 @@ module.exports = function(app) {
               return new Promise(function(resolve2, reject2) {
                 var productsPromises = receipt.ReceiptProducts.map(function(product) {
                   return new Promise(function(resolve3, reject3) {
-                    raccoon.liked(/*parseInt(*/customer.id/*)*/, /*parseInt(*/product.productId/*)*/, function() {
-                      resolve3('Customer ' + customer.id + ' liked ' + product.productId);
+                    raccoon.liked(customer.note/*.toString()*/, product.productId.toString(), function() {
+                      resolve3('Customer ' + customer.note + ' liked ' + product.productId);
                     });
                   });
                 });
@@ -55,11 +55,15 @@ module.exports = function(app) {
         Promise.all(customersPromises).then(function(customersProcessed) {
           console.log(customersProcessed);
           success = true;
+          resolve(success);
           //prova
-          raccoon.recommendFor(1, 10, function(recomendations) {
+          /*
+          raccoon.recommendFor('giulio', 10, function(recomendations) {
             console.log('recomendations', recomendations);
+            //raccoon.flush();
             resolve(success);
           });
+          */
           /*
           raccoon.mostSimilarUsers('1', function(results) {
             console.log('mostSimilarUsers' + results);
