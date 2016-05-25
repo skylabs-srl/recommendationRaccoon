@@ -63,7 +63,7 @@ module.exports = function(app) {
   exports.setBatchLiked = {
     description: 'Set customer like',
     handler: (request, reply) => {
-
+      
       var successPromise = new Promise(function(resolve, reject) {
         Receipt.findAll({
           where: {
