@@ -43,10 +43,10 @@ module.exports = function(app) {
   };
 
   exports.getRecommendations = {
-    description: 'List customer recomendations',
+    description: 'List customer recommendations',
     handler: (request, reply) => {
       raccoon.recommendFor(request.params.name, 10, function(recommendations) {
-        //console.log('recomendations', recomendations);
+        //console.log('recommendations', recommendations);
         //raccoon.flush();
         reply(recommendations);
       });
