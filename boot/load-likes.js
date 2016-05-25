@@ -33,6 +33,11 @@ module.exports = function(app) {
               return new Promise(function(resolve2, reject2) {
                 var productsPromises = receipt.ReceiptProducts.map(function(product) {
                   return new Promise(function(resolve3, reject3) {
+                    /*
+                    raccoon.input.liked(req.query[':userId'], req.query.movie.id, function(){
+                    raccoon.stat.recommendFor(req.query[':userId'], 15, function(recs){
+                    */
+                    //raccoon.input.liked(customer.id, product.productId, function() {
                     raccoon.liked(customer.note/*.toString()*/, product.productId.toString(), function() {
                       resolve3('Customer ' + customer.note + ' liked ' + product.productId);
                     });
@@ -55,15 +60,18 @@ module.exports = function(app) {
         Promise.all(customersPromises).then(function(customersProcessed) {
           console.log(customersProcessed);
           success = true;
-          resolve(success);
+          //resolve(success);
           //prova
           /*
-          raccoon.recommendFor('giulio', 10, function(recomendations) {
-            console.log('recomendations', recomendations);
+          raccoon.stat.recommendFor('giulio', 10, function(recommendations) {
+          //raccoon.recommendFor('giulio', 10, function(recommendations) {
+            console.log('recommendations', recommendations);
             //raccoon.flush();
             resolve(success);
           });
           */
+
+
           /*
           raccoon.mostSimilarUsers('1', function(results) {
             console.log('mostSimilarUsers' + results);

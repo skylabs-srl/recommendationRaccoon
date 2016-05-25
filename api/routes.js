@@ -8,11 +8,11 @@ module.exports = (app) => {
       config: customer.query
     }, {
       method: 'GET',
-      path: '/api/customers/{name}',
-      config: customer.getRecomendations
+      path: '/api/recommendations/{name}',
+      config: customer.getRecommendations
     }, {
       method: 'POST',
-      path: '/api/customers',
+      path: '/api/recommendations/like',
       config: customer.setLiked
     }]
   };

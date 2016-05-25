@@ -42,13 +42,13 @@ module.exports = function(app) {
     }
   };
 
-  exports.getRecomendations = {
+  exports.getRecommendations = {
     description: 'List customer recomendations',
     handler: (request, reply) => {
-      raccoon.recommendFor(request.params.name, 10, function(recomendations) {
+      raccoon.recommendFor(request.params.name, 10, function(recommendations) {
         //console.log('recomendations', recomendations);
         //raccoon.flush();
-        reply(recomendations);
+        reply(recommendations);
       });
     }
   };
