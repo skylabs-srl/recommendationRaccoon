@@ -1,8 +1,11 @@
 'use strict';
 
-const raccoon = require('./index.js');
+var raccoon = require('./index.js');
 const Hapi = require('hapi');
 const fs = require('fs');
+
+raccoon.connect(6379, '127.0.0.1');
+raccoon.config.className = 'product';
 
 const env = process.env.NODE_ENV || "development";
 var configPath = './config/' + env + '.js';
@@ -30,12 +33,26 @@ app.ctrls = require('./api/controllers')(app);
 
 logger.trace("Models and controllers loaded successfully.");
 
+var loadLikes = require(__dirname + '/boot/load-likes')(app);
+loadLikes
+  .then(function(result) {
+    console.log('loadLikes ' + result);
+  })
+  .catch(function(reason){
+    console.log(reason);
+  });
+
 // starting server
 var server = new Hapi.Server({
   debug: app.config.debugRequests
 });
 
-server.connection({ port: app.config.server.port, routes: { cors: true } });
+server.connection({
+  port: app.config.server.port,
+  routes: {
+    cors: true
+  }
+});
 server.route((require('./api/routes')(app)).endpoints);
 logger.trace("Routes loaded successfully.");
 
