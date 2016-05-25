@@ -14,6 +14,10 @@ module.exports = (app) => {
       method: 'POST',
       path: '/api/recommendations/like',
       config: customer.setLiked
+    }, {
+      method: 'POST',
+      path: '/api/recommendations/batchlike',
+      config: customer.setBatchLiked
     }]
   };
 };
