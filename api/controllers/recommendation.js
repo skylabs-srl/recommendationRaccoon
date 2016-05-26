@@ -15,6 +15,7 @@ module.exports = function(app) {
 
   exports.getRecommendations = {
     description: 'List customer recommendations',
+    notes: 'List customer recommendations for a given customer name.',
     tags: ['api', 'customer', 'recommendations'],
     validate: {
       params: {
@@ -30,6 +31,7 @@ module.exports = function(app) {
 
   exports.setLiked = {
     description: 'Set customer like',
+    notes: 'Set customer like for a given customer name and product ID.',
     tags: ['api', 'customer', 'recommendations'],
     validate: {
       payload: {
@@ -46,6 +48,7 @@ module.exports = function(app) {
 
   exports.setBatchLiked = {
     description: 'Set customer like in batch',
+    notes: 'Accepts an array of receipt IDs and set likes for the customers.',
     tags: ['api', 'customer', 'recommendations'],
     validate: {
       payload: {

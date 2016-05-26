@@ -17,6 +17,7 @@ module.exports = function(app) {
 
   exports.query = {
     description: 'List customers',
+    notes: 'List all customers with receipts and products.',
     tags: ['api', 'customers'],
     handler: (request, reply) => {
 
