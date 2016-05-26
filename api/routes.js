@@ -1,5 +1,6 @@
 module.exports = (app) => {
   var customer = app.ctrls.customer;
+  var recommendation = app.ctrls.recommendation;
 
   return {
     endpoints: [{
@@ -9,15 +10,15 @@ module.exports = (app) => {
     }, {
       method: 'GET',
       path: '/api/recommendations/{name}',
-      config: customer.getRecommendations
+      config: recommendation.getRecommendations
     }, {
       method: 'POST',
       path: '/api/recommendations/like',
-      config: customer.setLiked
+      config: recommendation.setLiked
     }, {
       method: 'POST',
       path: '/api/recommendations/batchlike',
-      config: customer.setBatchLiked
+      config: recommendation.setBatchLiked
     }]
   };
 };

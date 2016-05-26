@@ -1,8 +1,11 @@
 'use strict';
 
-var raccoon = require('./index.js');
+const raccoon = require('./index.js');
 const Hapi = require('hapi');
 const fs = require('fs');
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
 
 raccoon.connect(6379, '127.0.0.1');
 raccoon.config.className = 'product';
@@ -38,7 +41,7 @@ loadLikes
   .then(function(result) {
     console.log('loadLikes ' + result);
   })
-  .catch(function(reason){
+  .catch(function(reason) {
     console.log(reason);
   });
 
@@ -53,16 +56,45 @@ server.connection({
     cors: true
   }
 });
+
 server.route((require('./api/routes')(app)).endpoints);
 logger.trace("Routes loaded successfully.");
 
-server.start((err) => { // start server
-  if (err) {
-    logger.fatal("Can't start server: " + err);
-    console.log(err);
+server.register([
+  Inert,
+  Vision, {
+    register: HapiSwagger,
+    options: {
+      info: {
+        'title': app.config.name + ' Documentation',
+        'version': app.config.version,
+        'contact': app.config.authorContact,
+      },
+      tags: [{
+          'name': 'api',
+          'description': 'api'
+        }, ]
+        /*
+        pathPrefixSize: 2,
+        basePath: '/api'
+        */
+    }
   }
-  logger.trace('Server Listening on : http://' + app.config.server.host + ':' + app.config.server.port);
-  console.log('Server Listening on : http://' + app.config.server.host + ':' + app.config.server.port);
+], (err) => {
+  if (err) {
+    console.log(err);
+    logger.fatal("Can't register plugins: " + err);
+  }
+
+  logger.trace("Plugins loaded successfully.");
+  server.start((err) => { // start server
+    if (err) {
+      logger.fatal("Can't start server: " + err);
+      console.log(err);
+    }
+    logger.trace('Server Listening on : http://' + app.config.server.host + ':' + app.config.server.port);
+    console.log('Server Listening on : http://' + app.config.server.host + ':' + app.config.server.port);
+  });
 });
 
 process.on('SIGINT', function() {

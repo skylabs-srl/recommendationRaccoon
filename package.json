@@ -12,12 +12,16 @@
     "boom": "^3.2.1",
     "fs": "0.0.2",
     "hapi": "^13.4.1",
+    "hapi-swagger": "^5.1.0",
+    "inert": "^4.0.0",
+    "joi": "^8.1.1",
     "log4js": "^0.6.36",
     "mysql": "^2.10.2",
     "path": "^0.12.7",
     "redis": "~0.8.4",
     "sequelize": "^3.23.2",
-    "underscore": "~1.5.1"
+    "underscore": "~1.5.1",
+    "vision": "^4.1.0"
   },
   "devDependencies": {
     "coveralls": "2.1.x",
