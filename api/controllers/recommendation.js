@@ -19,13 +19,25 @@ module.exports = function(app) {
     tags: ['api', 'customer', 'recommendations'],
     validate: {
       params: {
-        name: Joi.string().required()
+        customerId: Joi.number().required()
       }
     },
     handler: (request, reply) => {
-      raccoon.recommendFor(request.params.name, 10, function(recommendations) {
-        reply(recommendations);
+      console.log('raccoon.recommendFor ' + request.params.customerId);
+      /*
+      return raccoon.recommendFor('customer' + request.params.customerId.toString() + 'Id', 10, function(recommendations) {
+        return reply(recommendations);
       });
+      */
+      raccoon
+        .recommendFor('customer' + request.params.customerId.toString() + 'Id', 10)
+        .then((results) => {
+          return reply(results);
+        })
+        .catch((err) => {
+          console.log(err);
+          return reply(err);
+        });
     }
   };
 
@@ -58,50 +70,61 @@ module.exports = function(app) {
     handler: (request, reply) => {
 
       var successPromise = new Promise(function(resolve, reject) {
-        Receipt.findAll({
-          where: {
-            id: request.payload.receiptIds
-          },
-          include: {
-            model: ReceiptProduct
-          }
-        }).then(function(receipts) {
-          if (!receipts) {
-            logger.error("Cannot retrieve receipts or no receipts at all.");
-            reject("Cannot retrieve receipts or no receipts at all.");
-          }
+        Receipt
+          .findAll({
+            where: {
+              id: request.payload.receiptIds
+            },
+            include: {
+              model: ReceiptProduct
+            }
+          })
+          .then(function(receipts) {
+            if (!receipts) {
+              logger.error("Cannot retrieve receipts or no receipts at all.");
+              reject("Cannot retrieve receipts or no receipts at all.");
+            }
 
-          var receiptsPromises = receipts.map(function(receipt) {
-            return new Promise(function(resolve1, reject1) {
-              var productsPromises = receipt.ReceiptProducts.map(function(product) {
-                return new Promise(function(resolve2, reject2) {
-                  raccoon.liked(receipt.customerId.toString(), product.productId.toString(), function() {
-                    resolve2('Customer ' + receipt.customerId + ' liked ' + product.productId);
+            var receiptsPromises = receipts.map(function(receipt) {
+              return new Promise(function(resolve1, reject1) {
+                var productsPromises = receipt.ReceiptProducts.map(function(product) {
+                  /*
+                  return new Promise(function(resolve2, reject2) {
+                    raccoon.liked('customer' + receipt.customerId.toString() + 'Id', product.productId.toString(), function() {
+                      console.log('customer' + receipt.customerId.toString() + 'Id', product.productId.toString());
+                      resolve2('Customer ' + receipt.customerId + ' liked ' + product.productId);
+                    });
                   });
+                  */
+
+                    return raccoon.liked('customer' + receipt.customerId.toString() + 'Id', product.productId.toString());
+
+                });
+                Promise.all(productsPromises).then(function(productLikes) {
+                  console.log(productLikes);
+                  resolve1('Receipt ' + receipt.id + ' processed.');
                 });
               });
-              Promise.all(productsPromises).then(function(productLikes) {
-                console.log(productLikes);
-                resolve1('Receipt ' + receipt.id + ' processed.');
-              });
             });
-          });
-          Promise.all(receiptsPromises).then(function(receiptsProcessed) {
-            console.log(receiptsProcessed);
-            resolve(receiptsProcessed);
-          });
+            Promise.all(receiptsPromises).then(function(receiptsProcessed) {
+              console.log(receiptsProcessed);
+              resolve(receiptsProcessed);
+            });
 
-        }).catch(function(e) {
-          logger.error("Cannot retrieve receipts or no receipts at all. Error: " + e);
-          reply(Boom.badData(e));
+          })
+          .catch(function(e) {
+            logger.error("Cannot retrieve receipts or no receipts at all. Error: " + e);
+            reply(Boom.badData(e));
+          });
+      });
+
+      successPromise
+        .then(function(results) {
+          reply(results);
+        })
+        .catch(function(reason) {
+          reply(Boom.badData(reason));
         });
-      });
-
-      successPromise.then(function(results) {
-        reply(results);
-      }).catch(function(reason) {
-        reply(Boom.badData(reason));
-      });
     }
   };
 

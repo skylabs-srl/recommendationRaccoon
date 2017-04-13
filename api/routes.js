@@ -9,7 +9,7 @@ module.exports = (app) => {
       config: customer.query
     }, {
       method: 'GET',
-      path: '/api/recommendations/{name}',
+      path: '/api/recommendations/{customerId}',
       config: recommendation.getRecommendations
     }, {
       method: 'POST',

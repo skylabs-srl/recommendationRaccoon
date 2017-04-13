@@ -11,8 +11,8 @@ module.exports = function(app) {
 
   var success = false;
 
-  var successPromise = new Promise(function(resolve, reject){
-
+  var successPromise = new Promise(function(resolve, reject) {
+    /*
     Customer
       .findAll({
         include: {
@@ -27,136 +27,96 @@ module.exports = function(app) {
           return logger.error("Cannot retrieve users or no users at all.");
         }
 
-        var customersPromises = customers.map(function(customer) {
+        console.log('customers', customers);
+
+        var customersPromises = customers.map(function(customer) {//swicth to map async??
           return new Promise(function(resolve1, reject1) {
             var receiptsPromises = customer.Receipts.map(function(receipt) {
               return new Promise(function(resolve2, reject2) {
                 var productsPromises = receipt.ReceiptProducts.map(function(product) {
                   return new Promise(function(resolve3, reject3) {
-                    /*
-                    raccoon.input.liked(req.query[':userId'], req.query.movie.id, function(){
-                    raccoon.stat.recommendFor(req.query[':userId'], 15, function(recs){
-                    */
-                    //raccoon.input.liked(customer.id, product.productId, function() {
-                    raccoon.liked(customer.note/*.toString()*/, product.productId.toString(), function() {
+                    raccoon.liked(customer.note, product.productId.toString(), function() {
+                      console.log('Customer ' + customer.note + ' liked ' + product.productId);
                       resolve3('Customer ' + customer.note + ' liked ' + product.productId);
                     });
                   });
                 });
                 Promise.all(productsPromises).then(function(productLikes) {
-                  console.log(productLikes);
+                  console.log('productLikes', productLikes);
                   resolve2('Receipt ' + receipt.id + ' processed.');
 
                 });
               });
             });
             Promise.all(receiptsPromises).then(function(receiptsProcessed) {
-              console.log(receiptsProcessed);
+              console.log('receiptsProcessed', receiptsProcessed);
               resolve1('Customer ' + customer.id + ' processed.');
             });
           });
         });
 
-        Promise.all(customersPromises).then(function(customersProcessed) {
-          console.log(customersProcessed);
-          success = true;
-          //resolve(success);
-          //prova
-          /*
-          raccoon.stat.recommendFor('giulio', 10, function(recommendations) {
-          //raccoon.recommendFor('giulio', 10, function(recommendations) {
-            console.log('recommendations', recommendations);
-            //raccoon.flush();
-            resolve(success);
-          });
-          */
-
-
-          /*
-          raccoon.mostSimilarUsers('1', function(results) {
-            console.log('mostSimilarUsers' + results);
-            // returns an array of the 'similaritySet' ranked sorted set for the user which
-            // represents their ranked similarity to all other users given the
-            // Jaccard Coefficient. the value is between -1 and 1. -1 means that the
-            // user is the exact opposite, 1 means they're exactly the same.
-            // ex. results = ['garyId', 'andrewId', 'jakeId']
-          });
-
-          raccoon.leastSimilarUsers('1', function(results) {
-            console.log('leastSimilarUsers' + results);
-            // same as mostSimilarUsers but the opposite.
-            // ex. results = ['timId', 'haoId', 'phillipId']
-          });
-
-          raccoon.bestRated(function(results) {
-            console.log('bestRated' + results);
-            // returns an array of the 'scoreBoard' sorted set which represents the global
-            // ranking of items based on the Wilson Score Interval. in short it represents the
-            // 'best rated' items based on the ratio of likes/dislikes and cuts out outliers.
-            // ex. results = ['iceageId', 'sleeplessInSeattleId', 'theDarkKnightId']
-          });
-
-          raccoon.worstRated(function(results) {
-            console.log('worstRated' + results);
-            // same as bestRated but in reverse.
-          });
-
-          raccoon.mostLiked(function(results) {
-            console.log('mostLiked' + results);
-            // returns an array of the 'mostLiked' sorted set which represents the global
-            // number of likes for all the items. does not factor in dislikes.
-          });
-
-          raccoon.mostDisliked(function(results) {
-            console.log('mostDisliked' + results);
-            // same as mostLiked but the opposite.
-          });
-
-          raccoon.likedBy('1', function(results) {
-            console.log('likedBy' + results);
-            // returns an array which lists all the users who liked that item.
-          });
-
-          raccoon.likedCount('1', function(results) {
-            console.log('likedCount' + results);
-            // returns the number of users who have liked that item.
-          });
-
-          raccoon.dislikedBy('1', function(results) {
-            console.log('dislikedBy' + results);
-            // same as likedBy but for disliked.
-          });
-
-          raccoon.dislikedCount('1', function(results) {
-            console.log('dislikedCount' + results);
-            // same as likedCount but for disliked.
-          });
-
-          raccoon.allLikedFor('1', function(results) {
-            console.log('allLikedFor' + results);
-            // returns an array of all the items that user has liked.
-          });
-
-          raccoon.allDislikedFor('1', function(results) {
-            console.log('allDislikedFor' + results);
-            // returns an array of all the items that user has disliked.
-          });
-
-          raccoon.allWatchedFor('1', function(results) {
-            console.log('allWatchedFor' + results);
-            // returns an array of all the items that user has liked or disliked.
-          });
-          */
-
-
-        });
-
+        return Promise.all(customersPromises);
+      })
+      .then((customersProcessed) => {
+        console.log('customersProcessed', customersProcessed);
+        resolve(customersProcessed);
       })
       .catch((e) => {
         logger.error("Cannot retrieve users or no users at all. Error: " + e);
         reject('DB error');
       });
     });
+    */
+    Receipt
+      .findAll({
+        include: {
+          model: ReceiptProduct
+        }
+      })
+      .then(function(receipts) {
+        if (!receipts) {
+          return logger.error("Cannot retrieve users or no users at all.");
+        }
 
+        //console.log('receipts', receipts);
+
+        var receiptsPromises = receipts.map(function(receipt) {
+
+          return new Promise(function(resolve2, reject2) {
+            var productsPromises = receipt.ReceiptProducts.map(function(product) {
+              /*
+              return new Promise(function(resolve3, reject3) {
+                console.log('raccoon.liked' + '(\'customer' + receipt.customerId.toString() + 'Id\', \''+ product.productId.toString() + '\')');
+                raccoon.liked('customer' + receipt.customerId.toString() + 'Id', product.productId.toString(), function() {
+                  console.log('Customer ' + receipt.customerId.toString() + ' liked ' + product.productId.toString());
+                  resolve3('Customer ' + receipt.customerId.toString() + ' liked ' + product.productId.toString());
+                });
+              });
+              */
+
+                console.log('raccoon.liked' + '(\'customer' + receipt.customerId.toString() + 'Id\', \''+ product.productId.toString() + '\')');
+                return raccoon.liked('customer' + receipt.customerId.toString() + 'Id', product.productId.toString());
+
+            });
+            Promise.all(productsPromises)
+              .then(function(productLikes) {
+                console.log('productLikes', productLikes);
+                resolve2('Receipt ' + receipt.id.toString() + ' processed.');
+              });
+          });
+        });
+
+        return Promise.all(receiptsPromises);
+
+      })
+      .then(function(receiptsProcessed) {
+        console.log('receiptsProcessed', receiptsProcessed);
+        resolve(receiptsProcessed);
+      })
+      .catch((e) => {
+        logger.error("Cannot retrieve users or no users at all. Error: " + e);
+        reject('DB error' + e);
+      });
+  });
   return successPromise;
 };

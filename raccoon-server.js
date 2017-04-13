@@ -7,7 +7,7 @@ const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 
-raccoon.connect(6379, '127.0.0.1');
+//raccoon.connect(6379, '127.0.0.1');
 raccoon.config.className = 'product';
 
 const env = process.env.NODE_ENV || "development";

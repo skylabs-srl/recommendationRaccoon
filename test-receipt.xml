@@ -1,0 +1,86 @@
+<receipts>
+  <receipt>
+    <date>2022-11-22 12:45:34</date>
+    <total>6146.32</total>
+    <products>
+      <product>
+        <barcode>129082390</barcode>
+        <description>AAA asdas</description>
+        <quantity>2</quantity>
+        <price>74</price>
+      </product>
+      <product>
+        <barcode>2340-23129082390</barcode>
+        <description>BBB</description>
+        <quantity>1</quantity>
+        <price>2.5</price>
+      </product>
+    </products>
+  </receipt>
+  <receipt>
+    <date>2014-11-22 12:45:34</date>
+    <total>85</total>
+    <products>
+      <product>
+        <barcode>979871987</barcode>
+        <description>BBB</description>
+        <quantity>1</quantity>
+        <price>25</price>
+      </product>
+    </products>
+  </receipt>
+  <receipt>
+    <date>2022-11-22 12:45:34</date>
+    <total>2878.33</total>
+    <products>
+      <product>
+        <barcode>129082390</barcode>
+        <description>AAA asdas</description>
+        <quantity>2</quantity>
+        <price>789</price>
+      </product>
+      <product>
+        <barcode>2340-23129082390</barcode>
+        <description>BBB</description>
+        <quantity>1</quantity>
+        <price>11</price>
+      </product>
+    </products>
+  </receipt>
+  <receipt>
+    <date>2078-11-22 12:45:34</date>
+    <total>6146.32</total>
+    <products>
+      <product>
+        <barcode>129082390</barcode>
+        <description>AAA asdas</description>
+        <quantity>2</quantity>
+        <price>2.4</price>
+      </product>
+      <product>
+        <barcode>2340-23129082390</barcode>
+        <description>BBB</description>
+        <quantity>1</quantity>
+        <price>2.5</price>
+      </product>
+    </products>
+  </receipt>
+  <receipt>
+    <date>2011-11-22 12:45:34</date>
+    <total>6146.32</total>
+    <products>
+      <product>
+        <barcode>129082390</barcode>
+        <description>AAA asdas</description>
+        <quantity>2</quantity>
+        <price>2.4</price>
+      </product>
+      <product>
+        <barcode>2340-23129082390</barcode>
+        <description>BBB</description>
+        <quantity>1</quantity>
+        <price>2.5</price>
+      </product>
+    </products>
+  </receipt>
+</receipts>
